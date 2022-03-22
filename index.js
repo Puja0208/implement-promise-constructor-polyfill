@@ -2,8 +2,8 @@
 import './style.css';
 
 // Write Javascript code!
-const appDiv = document.getElementById('app');
-appDiv.innerHTML = `<h1>JS Starter</h1>`;
+
+//Poyfill for promise constructor
 
 function CustomPromise(executor) {
   let isCalled = false;
@@ -49,4 +49,29 @@ function CustomPromise(executor) {
     }
   }
   executor(resolve, reject);
+}
+
+
+//Polyfill for isArray mehod for arrays
+function isArray(arg){
+  if(Object.prototype.toString.call(arg)==='[object Array]'){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+//Poyfill for reduce method for arrays
+function myReduce(callbackFn,initialValue){
+  let context = this;
+  let acc = initialValue;
+  for(let i=0;i<context.length;i++){
+    if(acc!==undefined){
+      acc = callbackFn(acc,this[i],i,this)
+    }
+    else{
+      acc=initialValue;
+    }
+  }
 }
