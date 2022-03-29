@@ -116,3 +116,45 @@ console.log(arr.splice(2, 2, 8, 9, 10));
 
 // call custom splice() on array to add elements
 console.log(mySplice.call(arr1, 2, 2, 8, 9, 10));
+
+function customAllSettled(promises) {
+  return new Promise((resolve, reject) => {
+    let result = [];
+    promises.forEach((promise) => {
+      promise.then(
+        function (value) {
+          result.push({
+            status: 'fulfilled',
+            value,
+          });
+          if (result.length === promises.length) resolve(result);
+        },
+        function (error) {
+          result.push({
+            status: 'rejected',
+            reason: error,
+          });
+          if (result.length === promises.length) resolve(result);
+        }
+      );
+    });
+  });
+}
+function customAny(promises) {
+  let error = [];
+  return new Promise((resolve, reject) => {
+    promises.forEach((promise) => {
+      promise.then(
+        function (value) {
+          resolve(value);
+        },
+        function (err) {
+          error.push(err);
+          if (error.length === promises.length) {
+            reject(error);
+          }
+        }
+      );
+    });
+  });
+}
