@@ -158,3 +158,21 @@ function customAny(promises) {
     });
   });
 }
+
+let customPromiseAll = (promises) => {
+  let result = [];
+  let fulfilledCount = 0;
+  promises.forEach((promise,index) => {
+    promise.then((value) => {
+      result[index] = value;
+      fulfilledCount++;
+      if(fulfilledCount===promises.length){
+        resolve(result);
+      }
+    })
+    .catch((error) => {
+      reject(error);
+    })
+  })
+
+}
