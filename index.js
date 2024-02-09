@@ -199,5 +199,4 @@ const deepCopy = (val) => {
       return acc;
     }, {});
   }
-  return clone;
 };
