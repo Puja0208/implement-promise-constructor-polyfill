@@ -162,17 +162,42 @@ function customAny(promises) {
 let customPromiseAll = (promises) => {
   let result = [];
   let fulfilledCount = 0;
-  promises.forEach((promise,index) => {
-    promise.then((value) => {
-      result[index] = value;
-      fulfilledCount++;
-      if(fulfilledCount===promises.length){
-        resolve(result);
-      }
-    })
-    .catch((error) => {
-      reject(error);
-    })
-  })
+  promises.forEach((promise, index) => {
+    promise
+      .then((value) => {
+        result[index] = value;
+        fulfilledCount++;
+        if (fulfilledCount === promises.length) {
+          resolve(result);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 
-}
+let deepClone = (input) => {
+  if (input == null || typeof input !== object) {
+    return input;
+  }
+  let output = Array.isArray(input) ? [] : {};
+  for (let key of Object.keys(input)) {
+    output[key] = deepClone(input(key));
+  }
+  return output;
+};
+
+const deepCopy = (val) => {
+  if (['string', 'boolean', 'number'].includes(typeof val)) {
+    return val;
+  } else if (Array.isArray(val)) {
+    return val.map((item) => deepCopy(item));
+  } else {
+    return Object.keys(val).reduce((acc, key) => {
+      acc[key] = deepCopy(val[key]);
+      return acc;
+    }, {});
+  }
+  return clone;
+};
